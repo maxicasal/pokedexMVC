@@ -14,6 +14,7 @@ class PokeListViewController: UIViewController {
   private var pokemons = [Pokemon]()
   private let searchController = UISearchController(searchResultsController: nil)
   private var filteredPokemons = [Pokemon]()
+  private var lastPokemon = 1
 
   @IBOutlet var loadingView: UIView!
   @IBOutlet var pokemonTableView: UITableView!
@@ -21,7 +22,7 @@ class PokeListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupSearchController()
-    loadPokemons()
+    loadInitialPokemons()
   }
 }
 
@@ -37,6 +38,20 @@ extension PokeListViewController: UITableViewDataSource, UITableViewDelegate {
       cell.configure(pokemon)
       return cell
   }
+  
+  func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    let lastSextionIndex = tableView.numberOfSections - 1
+    let lastIndexRow = tableView.numberOfRowsInSection(lastSextionIndex) - 1
+    if indexPath.row == lastIndexRow && indexPath.section == lastSextionIndex {
+      self.getNextPokemons()
+    }
+  }
+
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    let svc = segue.destinationViewController as! PokemonDetailViewController
+    let indexPath = pokemonTableView.indexPathForSelectedRow
+    svc.pokemon = isSearching() ? filteredPokemons[indexPath!.row] : pokemons[indexPath!.row]
+  }
 }
 
 extension PokeListViewController: UISearchResultsUpdating {
@@ -44,16 +59,18 @@ extension PokeListViewController: UISearchResultsUpdating {
   func setupSearchController() {
     searchController.searchBar.frame = CGRectMake(0, 0, pokemonTableView.bounds.width, 30)
     searchController.searchResultsUpdater = self
-    searchController.dimsBackgroundDuringPresentation = true
+    searchController.dimsBackgroundDuringPresentation = false
     definesPresentationContext = true
     pokemonTableView.tableHeaderView = searchController.searchBar
   }
 
   func filterContentForSearchText(searchText: String, scope: String = "All") {
+    searchController.dimsBackgroundDuringPresentation = true
     filteredPokemons = pokemons.filter({ pokemon in
       return pokemon.name!.lowercaseString.containsString(searchText.lowercaseString)
     })
     pokemonTableView.reloadData()
+    searchController.dimsBackgroundDuringPresentation = false
   }
 
   func isSearching() -> Bool {
@@ -67,13 +84,27 @@ extension PokeListViewController: UISearchResultsUpdating {
 
 extension PokeListViewController {
 
-  private func loadPokemons() {
+  private func loadInitialPokemons() {
     APIManager.trustAllCertificates()
     for id in 1...5 {
+      self.lastPokemon = id
       APIManager.sharedInstance.retrivePokemon(id, completionHandler: { (pokemon) in
         self.pokemons.append(pokemon)
         self.pokemonTableView.reloadData()
       })
+    }
+  }
+
+  private func getNextPokemons() {
+    if pokemons.count == lastPokemon {
+      let pokemonRange = lastPokemon+1
+      for id in pokemonRange...pokemonRange+5 {
+        lastPokemon = id
+        APIManager.sharedInstance.retrivePokemon(id, completionHandler: { (pokemon) in
+          self.pokemons.append(pokemon)
+          self.pokemonTableView.reloadData()
+        })
+      }
     }
   }
 }

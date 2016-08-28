@@ -30,7 +30,7 @@ extension APIManager {
   }
 
   private func parsePokemon(jsonResponse : AnyObject?) -> Pokemon? {
-    let reportJsonResponse = jsonResponse as! NSDictionary
-    return Mapper<Pokemon>().map(reportJsonResponse)!
+    let responseDictionary = jsonResponse as! NSDictionary
+    return Mapper<Pokemon>().map(responseDictionary)!
   }
 }
