@@ -30,4 +30,8 @@ class PokemonDetailViewController: UIViewController {
     heightLabel.text = "\(pokemon!.height!)"
     weightLabel.text = "\(pokemon!.weight!)"
   }
+
+  @IBAction func onClosePressed(sender: AnyObject) {
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
 }
