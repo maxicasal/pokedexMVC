@@ -6,8 +6,8 @@
 //  Copyright © 2016 Maxi Casal. All rights reserved.
 //
 
-import Foundation
 import ObjectMapper
+import UIKit
 
 class Pokemon: Mappable{
   var name: String?
@@ -19,6 +19,7 @@ class Pokemon: Mappable{
   var pokeTypes: [String]?
   var pokeNumber: Int?
   var imageURL: String?
+  var avatarImage: UIImage?
 
   required init?(_ map: Map) {
   }

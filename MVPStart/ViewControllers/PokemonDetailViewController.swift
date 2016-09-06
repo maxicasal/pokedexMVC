@@ -15,6 +15,7 @@ class PokemonDetailViewController: UIViewController {
   @IBOutlet var experienceLabel: UILabel!
   @IBOutlet var heightLabel: UILabel!
   @IBOutlet var weightLabel: UILabel!
+  @IBOutlet var avatarImage: UIImageView!
 
   var pokemon: Pokemon?
 
@@ -29,6 +30,7 @@ class PokemonDetailViewController: UIViewController {
     experienceLabel.text = "\(pokemon!.baseExperience!)"
     heightLabel.text = "\(pokemon!.height!)"
     weightLabel.text = "\(pokemon!.weight!)"
+    avatarImage.image = pokemon?.avatarImage!
   }
 
   @IBAction func onClosePressed(sender: AnyObject) {
