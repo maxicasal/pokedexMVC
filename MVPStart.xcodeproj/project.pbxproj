@@ -247,10 +247,18 @@
 		FBBA2AC21D65F1C3002B40E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FBCFD1A41D7F0B5300798E52 /* TableViewCells */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		FBCFD1A41D7F0B5300798E52 /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
 				FBBA2AC31D65F1F2002B40E4 /* PokeTableViewCell.swift */,
 				FB9BBE5C1D6FADD800F1D061 /* ItemTableViewCell.swift */,
 			);
-			name = Views;
+			name = TableViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
