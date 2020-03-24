@@ -21,7 +21,7 @@ class Pokemon: Mappable{
   var imageURL: String?
   var avatarImage: UIImage?
 
-    required init?(map: Map) {
+  required init?(_ map: Map) {
   }
 
   func mapping(map: Map) {

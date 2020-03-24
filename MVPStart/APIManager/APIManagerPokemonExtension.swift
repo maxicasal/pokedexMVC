@@ -11,26 +11,27 @@ import Alamofire
 import ObjectMapper
 
 extension APIManager {
-
-  func retrivePokemon(pokeID: Int, completionHandler: (pokemon: Pokemon) -> Void) {
-    Alamofire.request(.GET, "\(APIManager.sharedInstance.kBasePokemonURL)\(pokeID)", parameters: nil)
-      .responseJSON(options: NSJSONReadingOptions.AllowFragments) { response in
-        switch response.result {
-        case .Success(let JSON):
-          let pokemon = self.parsePokemon(JSON)
-          if let pokemonMapped = pokemon {
-            completionHandler(pokemon: pokemonMapped)
-          }
-          break
-        case .Failure(let error):
-          print(error)
-          break
+    
+    
+    func retrivePockemon(pokeId: Int, complitionHandler: @escaping ((_ pokemon: Pokemon) -> Void)) {
+        let url = APIManager.sharedInstance.kBasePokemonURL + "\(pokeId)"
+        Alamofire.request(url).responseJSON { (response) in
+            switch response.result {
+            case .success(let json):
+                let pokemon = self.parsePokemon(jsonResponse: json)
+                if let pokemonMapped = pokemon {
+                    complitionHandler(pokemonMapped)
+                }
+                break
+            case .failure(let error):
+                print(error.localizedDescription)
+                break
+            }
         }
     }
-  }
-
-  private func parsePokemon(jsonResponse : AnyObject?) -> Pokemon? {
-    let responseDictionary = jsonResponse as! NSDictionary
-    return Mapper<Pokemon>().map(responseDictionary)!
-  }
+    
+    private func parsePokemon(jsonResponse : Any?) -> Pokemon? {
+        let responseDictionary = jsonResponse as! Dictionary<String, Any>
+        return Mapper<Pokemon>().map(JSONObject: responseDictionary)!
+    }
 }

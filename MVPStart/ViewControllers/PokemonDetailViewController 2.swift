@@ -25,15 +25,15 @@ class PokemonDetailViewController: UIViewController {
   }
 
   private func setupDetailsInformation() {
-    pokenameLabel.text = pokemon?.name?.uppercased()
-    numberLabel.text = "\(pokemon?.pokeNumber)"
-    experienceLabel.text = "\(pokemon?.baseExperience)"
-    heightLabel.text = "\(pokemon?.height)"
-    weightLabel.text = "\(pokemon?.weight)"
-    avatarImage.image = pokemon?.avatarImage
+    pokenameLabel.text = pokemon!.name!.uppercaseString
+    numberLabel.text = "\(pokemon!.pokeNumber!)"
+    experienceLabel.text = "\(pokemon!.baseExperience!)"
+    heightLabel.text = "\(pokemon!.height!)"
+    weightLabel.text = "\(pokemon!.weight!)"
+    avatarImage.image = pokemon?.avatarImage!
   }
 
   @IBAction func onClosePressed(sender: AnyObject) {
-    self.dismiss(animated: true, completion: nil)
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
 }
