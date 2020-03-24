@@ -15,15 +15,19 @@ class PokeTableViewCell: UITableViewCell {
   @IBOutlet var numberLabel: UILabel!
   @IBOutlet var experienceLabel: UILabel!
 
-  func configure(pokemon: Pokemon) {
-    titleLabel.text = pokemon.name?.uppercaseString
-    numberLabel.text = "\(pokemon.pokeNumber!)"
-    experienceLabel.text = "\(pokemon.baseExperience!)"
-    avatarImageView.image = UIImage(named: "squirtle.png")
-    let url = NSURL(string: "http://pokeapi.co/media/sprites/pokemon/\(pokemon.id!).png")
-    if let data = NSData(contentsOfURL: url!) {
-      avatarImageView.image = UIImage(data: data)
-      pokemon.avatarImage = avatarImageView.image!
+    func configure(pokemon: Pokemon) {
+        titleLabel.text = pokemon.name?.uppercased()
+        numberLabel.text = "\(pokemon.pokeNumber ?? 0)"
+        experienceLabel.text = "\(pokemon.baseExperience ?? 0)"
+        avatarImageView.image = UIImage(named: "squirtle.png")
+        guard let url = URL(string: "http://pokeapi.co/media/sprites/pokemon/\(pokemon.id!).png") else { return }
+        do {
+            let data = try Data(contentsOf: url)
+            avatarImageView.image = UIImage(data: data)
+            pokemon.avatarImage = avatarImageView.image!
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
     }
-  }
 }

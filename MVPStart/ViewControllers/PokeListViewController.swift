@@ -97,10 +97,15 @@ extension PokeListViewController {
         APIManager.trustAllCertificates()
         for id in 1...5 {
             self.lastPokemon = id
-            APIManager.sharedInstance.retrivePokemon(pokeID: id, completionHandler: { (pokemon) in
+//            APIManager.sharedInstance.retrivePokemon(pokeID: id, completionHandler: { (pokemon) in
+//                self.pokemons.append(pokemon)
+//                self.pokemonTableView.reloadData()
+//            })
+            
+            APIManager.sharedInstance.retrivePockemon(pokeId: id) { (pokemon) in
                 self.pokemons.append(pokemon)
                 self.pokemonTableView.reloadData()
-            })
+            }
         }
     }
     
@@ -109,10 +114,11 @@ extension PokeListViewController {
             let pokemonRange = lastPokemon+1
             for id in pokemonRange...pokemonRange+5 {
                 lastPokemon = id
-                APIManager.sharedInstance.retrivePokemon(pokeID: id, completionHandler: { (pokemon) in
+                APIManager.sharedInstance.retrivePockemon(pokeId: id) { (pokemon) in
                     self.pokemons.append(pokemon)
                     self.pokemonTableView.reloadData()
-                })
+                }
+                
             }
         }
     }
